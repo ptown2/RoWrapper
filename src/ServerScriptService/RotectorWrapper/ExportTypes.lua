@@ -12,28 +12,28 @@ export type RoWrapper = {
 
 	-- Generates a Rotector Client based-url on the endpoint type defined by the <strong>ClientData</strong> structure.
 	-- Returns a Rotector Client URL requestable <strong>string</strong>.
-	GenerateRequestURL: typeof(function(urlType: string, appendUrl: string?) return "" end),
+	GenerateRequestURL: typeof(function(urlType: string, appendUrl: string?, canRetry: boolean) return "" end),
 
 	-- Check for a specific user's status.
 	-- Uses <code>OnUserCheck</code> hook on-call, if successful.
 	-- Additionally, returns a Rotector data status <strong>dictionary</strong>, if successful.
-	CheckUserStatus: typeof(function(userId: string | number, ignoreCache: boolean?) return {_G} end),
+	CheckUserStatus: typeof(function(userId: string | number, ignoreCache: boolean?, useRetries: boolean) return {_G} end),
 
 	-- Checks for multiple user statuses at once, <strong>up to 100 users</strong>. Iterable table with <code>userId</code> as <strong>integers</strong>.
 	-- Uses <code>OnUserBatchCheck</code> hook on-call, if successful.
 	-- Additionally, returns an <strong>iterable dictionary</strong> of <code>userIds</code> and their respective <strong>Rotector data status</strong>.
 	-- TODO: Handle instancing of all players grabbed by this data, if applicable.
-	CheckMultipleUserStatuses: typeof(function(userIds: {number}) return {_G} end),
+	CheckMultipleUserStatuses: typeof(function(userIds: {number}, ignoreCache: boolean?, useRetries: boolean) return {_G} end),
 
 	-- Checks for a specific group's status.
 	-- Uses <code>OnGroupCheck</code> hook on-call, if successful.
 	-- Additionally, returns a <strong>dictionary</strong> of Rotector data status.
-	CheckGroupStatus: typeof(function(groupIds: string | number, ignoreCache: boolean?) return {_G} end),
+	CheckGroupStatus: typeof(function(groupIds: string | number, ignoreCache: boolean?, useRetries: boolean) return {_G} end),
 
 	-- Checks for multiple group statuses at once, <strong>up to 100 groups</strong>. Iterable table with <code>groupId</code> as <strong>integers</strong>.
 	-- Uses <code>OnGroupBatchCheck</code> hook on-call, if successful.
 	-- Returns an <strong>iterable dictionary</strong> of <code>groupIds</code> and their respective <strong>Rotector data status</strong>.
-	CheckMultipleGroupStatuses: typeof(function(groupIds: {number}) return {_G} end),
+	CheckMultipleGroupStatuses: typeof(function(groupIds: {number}, ignoreCache: boolean?, useRetries: boolean) return {_G} end),
 }
 
 export type HTTPModule = {
