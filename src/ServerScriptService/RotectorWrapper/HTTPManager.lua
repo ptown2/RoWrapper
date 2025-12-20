@@ -57,6 +57,7 @@ function HTTPModule.RequestToUrl(urlReq, bodyReq, canRetry)
 		end
 	end
 
+	-- Sent during a failed http request.
 	if not lastSuccess then
 		return HandleErrorReport(`Error making request {lastResponse}`)
 	end

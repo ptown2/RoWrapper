@@ -12,7 +12,7 @@ export type RoWrapper = {
 
 	-- Generates a Rotector Client based-url on the endpoint type defined by the <strong>ClientData</strong> structure.
 	-- Returns a Rotector Client URL requestable <strong>string</strong>.
-	GenerateRequestURL: typeof(function(urlType: string, appendUrl: string?, canRetry: boolean) return "" end),
+	GenerateRequestURL: typeof(function(urlType: string, appendUrl: string?) return "" end),
 
 	-- Check for a specific user's status.
 	-- Uses <code>OnUserCheck</code> hook on-call, if successful.
@@ -41,7 +41,7 @@ export type HTTPModule = {
 
 	-- Handles <code>RequestAsync</code> internally for <code>GET|POST</code> requests to Rotector Client defined-urls.
 	-- Returns the <strong>JSON Decoded Body of the request</strong>, or <strong>nil</strong> plus an error to console.
-	RequestToUrl: typeof(function(urlReq: string, bodyReq: any) return {_G} end),
+	RequestToUrl: typeof(function(urlReq: string, bodyReq: any, canRetry: boolean) return {_G} end),
 }
 
 export type HookManager = {

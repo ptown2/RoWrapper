@@ -8,7 +8,7 @@ local ExportTypes = require(RotectorScript.ExportTypes)
 -- Setup client data.
 RotectorClient.SetBaseClientData({
 	AllowInternalChecks = true,
-	ClientURL = "https://roscoe.robalyx.com/v1/",
+	ClientURL = "https://roscoe.rotector.com/v1/",
 	Endpoints = {
 		Users = "lookup/roblox/user",
 		Groups = "lookup/roblox/group",
