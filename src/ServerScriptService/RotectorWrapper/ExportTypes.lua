@@ -63,13 +63,19 @@ export type HookManager = {
 
 export type RoEnums = {
 	FlagTypes: {
-		SAFE: number,
-		PENDING: number,
-		UNSAFE: number,
+		UNFLAGGED: number,
+		FLAGGED: number,
+		CONFIRMED: number,
 		QUEUED: number,
 		INTEGRATION: number,
 		MIXED: number,
 		PAST_OFFENDER: number,
+	},
+
+	SourceTypes: {
+		BLOXLINK: number,
+		ROVER: number,
+		DISCORD: number,
 	},
 
 	UserReasonTypes: {
@@ -93,9 +99,13 @@ export type RoEnums = {
 	},
 
 	StrictLevel: {
+		-- Targets Unsafe users.
 		NONE: number,
+		-- Targets both unsafe and in-review users.
 		LOW: number,
+		-- Targets unsafe, in-review, and mixed users.
 		MEDIUM: number,
+		-- Targets all types of unsafe users. Including past-offenders.
 		HIGH: number,
 	},
 
@@ -111,24 +121,36 @@ export type RoEnums = {
 	-- Returns a <code>boolean</code> if the user/group is contextually unsafe.
 	IsUnsafeFlag: typeof(function(flagType: number, strictLevel: number?) return true end),
 	
-	-- Verifies if the given <code>reasonData</code> structure contains a condo flag or element applied.
+	-- Verifies if the given <code>reasonData</code> structure contains or has specific elements of Condo sub-flags applied.
+	-- Has an optional <code>boolean</code> argument to expand the checking for all types of sub-flags.
 	-- Returns a <code>boolean</code> if the user/group is contextually condo related.
 	-- -----
 	-- TODO: Include support for contextualizing groups. At least they're group purposed when reviewed?	
-	IsConfirmedCondoFlag: typeof(function(reasonData: {any}) return true end),
+	HasCondoFlag: typeof(function(reasonData: {any}, anyFlag: boolean) return true end),
+
+	-- Verifies if the given <code>reasonData</code> structure contains or has elements of RR34 flag applied.
+	-- Returns a <code>boolean</code> if the user/group is contextually RR34 related.
+	HasRR34Flag: typeof(function(reasonData: {any}) return true end),
 }
 
 export type RotectorData = {
 	id: number,
 	flagType: number,
-	engineVersion: string,
 	confidence: number,
-	lastUpdated: number,
+	engineVersion: string,
+	versionCompatibility: string,
+	isReportable: boolean,
+	isLocked: boolean,
+	queuedAt: number,
 	processed: boolean,
 	processedAt: number,
-	queuedAt: number,
+	lastUpdated: number,
 	reasons: {
 		[string]: RotectorReasonsData
+	},
+	reviewer: {
+		username: string,
+		displayName: string,
 	},
 }
 

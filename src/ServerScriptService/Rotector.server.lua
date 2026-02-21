@@ -18,7 +18,7 @@ RotectorClient.SetBaseClientData({
 -- Setup a config for async bans
 local BanAsyncConfig: BanConfigType = {
 	Duration = -1,
-	DisplayReason = "You have been flagged as a potential unsafe user, please contact us for more information.",
+	DisplayReason = "You have been flagged as a potentially unsafe ROBLOX user, please contact us for more information.",
 	PrivateReason = "<Default Rotector Reason>",
 	ExcludeAltAccounts = false,
 	ApplyToUniverse = true,
@@ -33,24 +33,31 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 	print(playerObject)
 
 	-- Can use to verify confidence levels
-	if data.confidence and data.confidence < 0.25 then return end
+	if data.confidence and data.confidence < 0.33 then return end
 
 	-- Even check if they're still pending to be fully reviewed.
-	if data.flagType == enum.FlagTypes.PENDING then
-		warn(`This user is still pending for review, proceed with caution...`)
+	if data.flagType == enum.FlagTypes.QUEUED then
+		warn(`This user is still pending for AI review, proceed with caution...`)
 	end
 
-	-- It now has strict level checking, defaults to 1 for UNSAFE; 2 for UNSAFE + MIXED; 3 for BOTH + PAST OFFENDER
+	--[[
+	It now has strict level checking, defaults to 0.
+		- 0/NONE is only CONFIRMED flagged users.
+		- 1/LOW is CONFIRMED + FLAGGED
+		- 2/MEDIUM is CONFIRMED + FLAGGED + MIXED
+		- 3/HIGH is CONFIRMED + FLAGGED + MIXED + PAST OFFENDER
+	]]
 	if enum.IsUnsafeFlag(data.flagType, enum.StrictLevel.MEDIUM) then
 		print(`ALARM! UNSAFE USER ID {playerObject or data.id}!`)
 
-		-- Condo users begone.
-		if data.reasons and enum.IsConfirmedCondoFlag(data.reasons) then
-			warn(`DANGER!!! {playerObject or data.id} IS CONFIRMED CONDO USER!!!`)
+		-- Condo and RR34, begone.
+		if not data.reasons then return end
+		if enum.HasCondoFlag(data.reasons) or enum.HasRR34Flag(data.reasons) then
+			warn(`DANGER!!! {playerObject or data.id} IS CONFIRMED CONDO/RR34 USER!!!`)
 
 			-- Setup the final parts of the BanAsync.
 			BanAsyncConfig.UserIds = { data.id }
-			BanAsyncConfig.PrivateReason = table.concat(enum.GetReasonDescriptions(data.reasons), ", ")
+			BanAsyncConfig.PrivateReason = table.concat(enum.GetReasonDescriptions(data.reasons), " | ")
 
 			local success, err = pcall(function()
 				Players:BanAsync(BanAsyncConfig)

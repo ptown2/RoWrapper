@@ -1,12 +1,10 @@
 --!nonstrict
 
 --[[
-	RoWrapper, a ROBLOX LuaU based wrapper,
+	RoWrapper, a ROBLOX LuaU based Rotector wrapper,
 	with easier integration to check users.
-
-	See CHANGELOGS for more changes or information.
-
 	- ptown2
+
 	Licensed under the GNU General Public License v2.0
 ]]
 
@@ -55,7 +53,11 @@ local function OverlayConfigs(base, defined, key_list)
 	end
 
 	if type(defined) ~= "table" then
-		return defined or base
+		if defined ~= nil then
+			return defined
+		end
+
+		return base
 	end
 
 	for name, value in pairs(defined) do
