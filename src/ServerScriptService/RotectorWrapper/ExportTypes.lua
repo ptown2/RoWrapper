@@ -126,7 +126,7 @@ export type RoEnums = {
 	-- Returns a <code>boolean</code> if the user/group is contextually condo related.
 	-- -----
 	-- TODO: Include support for contextualizing groups. At least they're group purposed when reviewed?	
-	HasCondoFlag: typeof(function(reasonData: {any}, anyFlag: boolean) return true end),
+	HasCondoFlag: typeof(function(reasonData: {any}, anySubFlags: boolean) return true end),
 
 	-- Verifies if the given <code>reasonData</code> structure contains or has elements of RR34 flag applied.
 	-- Returns a <code>boolean</code> if the user/group is contextually RR34 related.

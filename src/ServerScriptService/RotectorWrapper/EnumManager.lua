@@ -130,17 +130,17 @@ function RoEnums.IsUnsafeFlag(flagType, strictLevel)
 	return (flagLevel and flagLevel <= strictLevel)
 end
 
-function RoEnums.HasCondoFlag(reasonData, anyFlags)
+function RoEnums.HasCondoFlag(reasonData, anySubFlags)
 	assert(reasonData, "No reason table data defined.")
 
 	local hasCondoFlag = reasonData[UserReasonTypes.CONDO_ACTIVITY]
-	if hasCondoFlag then
+	if hasCondoFlag and not anySubFlags then
 		local hasTrueFlags = hasCondoFlag.message:lower():find("[(discord)][(trap)]")
 		return (hasCondoFlag.evidence and #hasCondoFlag.evidence > 0) or hasTrueFlags
 	end
 
 	local hasOtherFlag = reasonData[UserReasonTypes.OTHER_REASONS]
-	return (hasOtherFlag and hasOtherFlag.message:lower():find("[(condo)]")) or (hasCondoFlag and anyFlags)
+	return (hasOtherFlag and hasOtherFlag.message:lower():find("[(condo)]")) or (hasCondoFlag and anySubFlags)
 end
 
 function RoEnums.HasRR34Flag(reasonData)
