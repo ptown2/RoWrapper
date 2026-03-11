@@ -135,12 +135,12 @@ function RoEnums.HasCondoFlag(reasonData, anySubFlags)
 
 	local hasCondoFlag = reasonData[UserReasonTypes.CONDO_ACTIVITY]
 	if hasCondoFlag and not anySubFlags then
-		local hasTrueFlags = hasCondoFlag.message:lower():find("[(discord)][(trap)]")
+		local hasTrueFlags = hasCondoFlag.message:lower():find("[(discord)][(trap)][(monitor)][(group)][(developer)]")
 		return (hasCondoFlag.evidence and #hasCondoFlag.evidence > 0) or hasTrueFlags
 	end
 
 	local hasOtherFlag = reasonData[UserReasonTypes.OTHER_REASONS]
-	return (hasOtherFlag and hasOtherFlag.message:lower():find("[(condo)]")) or (hasCondoFlag and anySubFlags)
+	return (hasOtherFlag and hasOtherFlag.message:lower():find("[(condo)][(nsfw)]")) or (hasCondoFlag and anySubFlags)
 end
 
 function RoEnums.HasRR34Flag(reasonData)
@@ -149,7 +149,7 @@ function RoEnums.HasRR34Flag(reasonData)
 	local hasFlag = reasonData[UserReasonTypes.OTHER_REASONS]
 	if not hasFlag then return end
 
-	return hasFlag.message:lower():find("[(r34)][(rr34)]")
+	return hasFlag.message:lower():find("[(r34)][(nsfw)]")
 end
 
 return RoEnums

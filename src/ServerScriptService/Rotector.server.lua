@@ -47,13 +47,16 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 		- 2/MEDIUM is CONFIRMED + FLAGGED + MIXED
 		- 3/HIGH is CONFIRMED + FLAGGED + MIXED + PAST OFFENDER
 	]]
-	if enum.IsUnsafeFlag(data.flagType, enum.StrictLevel.MEDIUM) then
-		print(`ALARM! UNSAFE USER ID {playerObject or data.id}!`)
+	local check_unsafe = enum.IsUnsafeFlag(data.flagType, enum.StrictLevel.NONE)
+	local check_mixed = enum.IsUnsafeFlag(data.flagType, enum.StrictLevel.MEDIUM)
 
-		-- Condo and RR34, begone.
+	if check_mixed then
 		if not data.reasons then return end
-		if enum.HasCondoFlag(data.reasons) or enum.HasRR34Flag(data.reasons) then
-			warn(`DANGER!!! {playerObject or data.id} IS CONFIRMED CONDO/RR34 USER!!!`)
+
+		-- Unsafe user, begone.
+		print(`ALARM! POSSIBLY UNSAFE USER ID {playerObject or data.id}!`)
+		if check_unsafe or enum.HasCondoFlag(data.reasons) or enum.HasRR34Flag(data.reasons) then
+			warn(`DANGER!!! <{playerObject}> #{data.id} IS CONFIRMED PURELY UNSAFE USER!!!`)
 
 			-- Setup the final parts of the BanAsync.
 			BanAsyncConfig.UserIds = { data.id }
@@ -64,6 +67,6 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 			end)
 		end
 	else
-		print(`Player {playerObject or data.id} came out without any unsafe flags for now.`)
+		print(`Player <{playerObject}> #{data.id} came out without any unsafe flags for now.`)
 	end
 end)
