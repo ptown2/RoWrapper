@@ -37,7 +37,7 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 
 	-- Even check if they're still pending to be fully reviewed.
 	if data.flagType == enum.FlagTypes.QUEUED then
-		warn(`This user is still pending for AI review, proceed with caution...`)
+		print(`NOTICE! This user is still pending for AI review, proceed with caution...`)
 	end
 
 	--[[
@@ -54,7 +54,8 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 		if not data.reasons then return end
 
 		-- Unsafe user, begone.
-		print(`ALARM! POSSIBLY UNSAFE USER ID {playerObject or data.id}!`)
+		print(`ALARM! POSSIBLY UNSAFE USER <{playerObject}> #{data.id}!`)
+
 		if check_unsafe or enum.HasCondoFlag(data.reasons) or enum.HasRR34Flag(data.reasons) then
 			warn(`DANGER!!! <{playerObject}> #{data.id} IS CONFIRMED PURELY UNSAFE USER!!!`)
 
@@ -67,6 +68,6 @@ RotectorClient.Hook.Add("OnUserCheck", "TargetPureUnsafe", function(data: Export
 			end)
 		end
 	else
-		print(`Player <{playerObject}> #{data.id} came out without any unsafe flags for now.`)
+		print(`User <{playerObject}> #{data.id} came out without any unsafe flags for now.`)
 	end
 end)
